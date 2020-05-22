@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GithubApp</string>
+    <string name="no_internet_connection">tidak ada koneksi internet</string>
+</resources>
