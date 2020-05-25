@@ -12,7 +12,7 @@ object AppUtils {
         return networkInfo != null && networkInfo.isConnected
     }
 
-    fun defaultDialog(context: Context, message: String, callback: () -> Unit) {
+    fun defaultDialog(context: Context, message: String) {
         val builder1: AlertDialog.Builder = AlertDialog.Builder(context)
         builder1.setMessage(message)
         builder1.setCancelable(true)

@@ -12,13 +12,15 @@ class SearchVm : ViewModel() {
     private val userApi = ApiFactory.userApi
     var listUser = MutableLiveData<AllUser>()
 
-    fun getAllUser(searchName: String) {
+    fun getAllUser(searchName: String, sort: String, order: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            val getUserName = userApi.getAllUserAsync(searchName, "100", "1000")
+            val getUserName = userApi.getAllUserAsync(searchName, sort, order)
             try {
                 val response = getUserName.await()
                 if (response.isSuccessful) {
-                    listUser.value = response.body()
+                    response.body()?.also {
+                        listUser.value = it
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

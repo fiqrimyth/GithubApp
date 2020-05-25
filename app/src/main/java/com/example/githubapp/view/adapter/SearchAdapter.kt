@@ -1,17 +1,19 @@
 package com.example.githubapp.view.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.githubapp.R
-import com.example.githubapp.model.AllUser
-import com.squareup.picasso.Picasso
+import com.example.githubapp.model.Item
 
-class SearchAdapter(private val items: List<AllUser>) :
+class SearchAdapter(private val context: Context) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+    private var mItems: ArrayList<Item> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.search_adapter, parent, false)
@@ -19,18 +21,31 @@ class SearchAdapter(private val items: List<AllUser>) :
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return mItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = items[position]
+        try {
+            val user = mItems[position]
+            Glide.with(context).load(user.avatarURL).into(holder.imgPhoto)
+            holder.tvName.text = user.login
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
-        Picasso.get().load(user.items[position].avatarURL).into(holder.imgPhoto)
-        holder.tvName.text = user.items[position].login
+    fun putItems(items: ArrayList<Item>) {
+        mItems.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        mItems.clear()
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvName: TextView = itemView.findViewById(R.id.ivUser)
+        var tvName: TextView = itemView.findViewById(R.id.tvUser)
         var imgPhoto: ImageView = itemView.findViewById(R.id.ivUser)
     }
 }
